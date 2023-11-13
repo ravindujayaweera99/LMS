@@ -9,10 +9,6 @@ const UsersSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    reg_no: {
-        type: String,
-        required: true
-    },
     nic: {
         type: String,
         required: true
@@ -26,10 +22,6 @@ const UsersSchema = new mongoose.Schema({
         required: true
     },
     age: {
-        type: String,
-        required: true
-    },
-    password: {
         type: String,
         required: true
     },
