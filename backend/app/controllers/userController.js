@@ -2,9 +2,12 @@ const User = require('../Models/userModel');
 
 const createUser = async(req, res) => {
     try {
-        const newUser = await new User(req.body);
+
+        const { user_id, user_name, nic, email, phone, age, status } = req.body;
+
+        const newUser = await new User({user_id, user_name, nic, email, phone, age, status});
         await newUser.save();
-        res.status(201).json(User);
+        res.status(201).send(newUser);
       } catch (error) {
         res.status(400).send(error);
       }
@@ -32,14 +35,13 @@ const fetchUsers = async (req, res) => {
 const updateUser = async (req, res) => {
     const id = req.params.id;
     try {
-        // const student_before_update = await Student.findById(id);
-        // if (!student_before_update) {
-        //   return res.status(404).send('Student not found');
-        // }
-        // res.send(student_before_update);
+        const student_before_update = await User.findOne({ user_id: id });
+        if (!student_before_update) {
+          return res.status(404).send('Student not found');
+        }
 
-        await User.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
-        const student_after_update = await User.findById(id)
+        await User.findOneAndUpdate({ user_id: id }, req.body, { new: true, runValidators: true });
+        const student_after_update = await User.findOne({ user_id: id })
 
         res.send(student_after_update);
 
@@ -51,7 +53,7 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
     const id = req.params.id;
     try {
-      const deletedUser = await User.findByIdAndDelete(id);
+      const deletedUser = await User.findOneAndDelete({ user_id: id });
       if (!deletedUser) {
         return res.status(404).send('Student not found');
       }
